@@ -1524,3 +1524,8 @@ type HAResource struct {
 	MaxRestart  *uint            `json:"max_restart,omitempty"`
 	State       *HAResourceState `json:"state,omitempty"`
 }
+
+type VirtualMachineDeleteRequest struct {
+	DestroyUnreferencedDisks *IntOrBool
+	Purge                    *IntOrBool
+}

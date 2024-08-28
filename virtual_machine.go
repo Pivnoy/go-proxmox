@@ -324,13 +324,39 @@ func (v *VirtualMachine) Reboot(ctx context.Context) (task *Task, err error) {
 	return NewTask(upid, v.client), nil
 }
 
-func (v *VirtualMachine) Delete(ctx context.Context) (task *Task, err error) {
-	if ok, err := v.deleteCloudInitISO(ctx); err != nil || !ok {
-		return nil, err
+func (v *VirtualMachine) Delete(ctx context.Context, options ...VirtualMachineDeleteOption) (task *Task, err error) {
+	req := VirtualMachineDeleteRequest{}
+	for _, o := range options {
+		o(&req)
 	}
 
+	deleteVmParams := url.Values{}
+	deleteVmURLPart := url.URL{
+		Path: fmt.Sprintf("/nodes/%s/qemu/%d", v.Node, v.VMID),
+	}
+
+	if req.DestroyUnreferencedDisks != nil {
+		value, err := req.DestroyUnreferencedDisks.MarshalJSON()
+		if err != nil {
+			return nil, fmt.Errorf("marshal 'destroy-unreferenced-disks' value: %w", err)
+		}
+
+		deleteVmParams.Set("destroy-unreferenced-disks", string(value))
+	}
+
+	if req.Purge != nil {
+		value, err := req.Purge.MarshalJSON()
+		if err != nil {
+			return nil, fmt.Errorf("marshal 'destroy-unreferenced-disks' value: %w", err)
+		}
+
+		deleteVmParams.Set("purge", string(value))
+	}
+
+	deleteVmURLPart.RawQuery = deleteVmParams.Encode()
+
 	var upid UPID
-	if err = v.client.Delete(ctx, fmt.Sprintf("/nodes/%s/qemu/%d", v.Node, v.VMID), &upid); err != nil {
+	if err = v.client.Delete(ctx, deleteVmURLPart.String(), &upid); err != nil {
 		return nil, err
 	}
 
