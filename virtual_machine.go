@@ -325,35 +325,16 @@ func (v *VirtualMachine) Reboot(ctx context.Context) (task *Task, err error) {
 }
 
 func (v *VirtualMachine) Delete(ctx context.Context, options ...VirtualMachineDeleteOption) (task *Task, err error) {
-	req := VirtualMachineDeleteRequest{}
-	for _, o := range options {
-		o(&req)
+	params, err := formVmDeleteParams(options...)
+	if err != nil {
+		return nil, fmt.Errorf("form vm delete params: %w", err)
 	}
 
-	deleteVmParams := url.Values{}
 	deleteVmURLPart := url.URL{
 		Path: fmt.Sprintf("/nodes/%s/qemu/%d", v.Node, v.VMID),
 	}
 
-	if req.DestroyUnreferencedDisks != nil {
-		value, err := req.DestroyUnreferencedDisks.MarshalJSON()
-		if err != nil {
-			return nil, fmt.Errorf("marshal 'destroy-unreferenced-disks' value: %w", err)
-		}
-
-		deleteVmParams.Set("destroy-unreferenced-disks", string(value))
-	}
-
-	if req.Purge != nil {
-		value, err := req.Purge.MarshalJSON()
-		if err != nil {
-			return nil, fmt.Errorf("marshal 'destroy-unreferenced-disks' value: %w", err)
-		}
-
-		deleteVmParams.Set("purge", string(value))
-	}
-
-	deleteVmURLPart.RawQuery = deleteVmParams.Encode()
+	deleteVmURLPart.RawQuery = params
 
 	var upid UPID
 	if err = v.client.Delete(ctx, deleteVmURLPart.String(), &upid); err != nil {
@@ -697,4 +678,33 @@ func (v *VirtualMachine) UnmountCloudInitISO(ctx context.Context, device string)
 		return err
 	}
 	return nil
+}
+
+func formVmDeleteParams(options ...VirtualMachineDeleteOption) (string, error) {
+	req := VirtualMachineDeleteRequest{}
+	for _, o := range options {
+		o(&req)
+	}
+
+	deleteVmParams := url.Values{}
+
+	if req.DestroyUnreferencedDisks != nil {
+		value, err := req.DestroyUnreferencedDisks.MarshalJSON()
+		if err != nil {
+			return "", fmt.Errorf("marshal 'destroy-unreferenced-disks' param value: %w", err)
+		}
+
+		deleteVmParams.Set("destroy-unreferenced-disks", string(value))
+	}
+
+	if req.Purge != nil {
+		value, err := req.Purge.MarshalJSON()
+		if err != nil {
+			return "", fmt.Errorf("marshal 'purge' param value: %w", err)
+		}
+
+		deleteVmParams.Set("purge", string(value))
+	}
+
+	return deleteVmParams.Encode(), nil
 }
