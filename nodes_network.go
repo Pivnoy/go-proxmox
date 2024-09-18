@@ -65,14 +65,14 @@ func (nw *NodeNetwork) Update(ctx context.Context) error {
 	return nw.client.Put(ctx, fmt.Sprintf("/nodes/%s/network/%s", nw.Node, nw.Iface), nw, nil)
 }
 
-func (nw *NodeNetwork) Delete(ctx context.Context) (task *Task, err error) {
-	var upid UPID
+func (nw *NodeNetwork) Delete(ctx context.Context) (*Task, error) {
 	if "" == nw.Iface {
-		return
+		return nil, nil
 	}
-	err = nw.client.Delete(ctx, fmt.Sprintf("/nodes/%s/network/%s", nw.Node, nw.Iface), &upid)
-	if err != nil {
-		return
+
+	var upid UPID
+	if err := nw.client.Delete(ctx, fmt.Sprintf("/nodes/%s/network/%s", nw.Node, nw.Iface), &upid); err != nil {
+		return nil, fmt.Errorf("delete node network: %w", err)
 	}
 
 	return nw.NodeAPI.NetworkReload(ctx)
