@@ -66,3 +66,17 @@ func WithTLSConfig(config *tls.Config) Option {
 		c.tlsConfig = config
 	}
 }
+
+type VirtualMachineDeleteOption func(*VirtualMachineDeleteRequest)
+
+func VirtualMachineDeleteWithUnreferencedDisks(unrefDisks IntOrBool) VirtualMachineDeleteOption {
+	return func(r *VirtualMachineDeleteRequest) {
+		r.DestroyUnreferencedDisks = &unrefDisks
+	}
+}
+
+func VirtualMachineDeleteWithPurge(purge IntOrBool) VirtualMachineDeleteOption {
+	return func(r *VirtualMachineDeleteRequest) {
+		r.Purge = &purge
+	}
+}
