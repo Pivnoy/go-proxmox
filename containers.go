@@ -112,13 +112,6 @@ func (c *Container) TermWebSocket(term *Term) (chan []byte, chan []byte, chan er
 	return c.client.TermWebSocket(p, term)
 }
 
-func (c *Container) VNCWebSocket(vnc *VNC) (chan []byte, chan []byte, chan error, func() error, error) {
-	p := fmt.Sprintf("/nodes/%s/lxc/%d/vncwebsocket?port=%d&vncticket=%s",
-		c.Node, c.VMID, vnc.Port, url.QueryEscape(vnc.Ticket))
-
-	return c.client.VNCWebSocket(p, vnc)
-}
-
 func (c *Container) Feature(ctx context.Context) (hasFeature bool, err error) {
 	var feature struct {
 		HasFeature bool `json:"hasFeature"`

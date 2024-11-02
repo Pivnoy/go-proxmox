@@ -37,14 +37,6 @@ func (n *Node) TermWebSocket(term *Term) (chan []byte, chan []byte, chan error, 
 	return n.client.TermWebSocket(p, term)
 }
 
-// VNCWebSocket send, recv, errors, closer, error
-func (n *Node) VNCWebSocket(vnc *VNC) (chan []byte, chan []byte, chan error, func() error, error) {
-	p := fmt.Sprintf("/nodes/%s/vncwebsocket?port=%d&vncticket=%s",
-		n.Name, vnc.Port, url.QueryEscape(vnc.Ticket))
-
-	return n.client.VNCWebSocket(p, vnc)
-}
-
 func (n *Node) VirtualMachines(ctx context.Context) (vms VirtualMachines, err error) {
 	if err = n.client.Get(ctx, fmt.Sprintf("/nodes/%s/qemu", n.Name), &vms); err != nil {
 		return nil, err

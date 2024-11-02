@@ -232,16 +232,6 @@ func (v *VirtualMachine) TermWebSocket(term *Term) (chan []byte, chan []byte, ch
 	return v.client.TermWebSocket(p, term)
 }
 
-// VNCWebSocket copy/paste when calling to get the channel names right
-// send, recv, errors, closer, errors := vm.VNCWebSocket(vnc)
-// for this to work you need to first set up a serial terminal on your vm https://pve.proxmox.com/wiki/Serial_Terminal
-func (v *VirtualMachine) VNCWebSocket(vnc *VNC) (chan []byte, chan []byte, chan error, func() error, error) {
-	p := fmt.Sprintf("/nodes/%s/qemu/%d/vncwebsocket?port=%d&vncticket=%s",
-		v.Node, v.VMID, vnc.Port, url.QueryEscape(vnc.Ticket))
-
-	return v.client.VNCWebSocket(p, vnc)
-}
-
 func (v *VirtualMachine) IsRunning() bool {
 	return v.Status == StatusVirtualMachineRunning && (v.QMPStatus == "" || v.QMPStatus == StatusVirtualMachineRunning)
 }
