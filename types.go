@@ -1673,3 +1673,56 @@ type VirtualMachineDeleteRequest struct {
 	DestroyUnreferencedDisks *IntOrBool
 	Purge                    *IntOrBool
 }
+
+// "compress": "zstd",
+// "mode": "snapshot",
+// "notes-template": "{{guestname}}",
+// "enabled": 1,
+// "schedule": "*/2:00",
+// "vmid": "101,102",
+// "id": "backup-3ab7be4b-48d4",
+// "type": "vzdump",
+// "next-run": 1730732400,
+// "mailnotification": "always",
+// "storage": "cephfs"
+
+type (
+	BackupJobMode        string
+	BackupJobCompression string
+)
+
+const (
+	BackupJobModeSnapshot = BackupJobMode("snapshot")
+	BackupJobModeStop     = BackupJobMode("stop")
+	BackupJobModeSuspend  = BackupJobMode("suspend")
+
+	BackupJobCompressionNone = BackupJobCompression("none")
+	BackupJobCompressionLZO  = BackupJobCompression("lzo")
+	BackupJobCompressionGZIP = BackupJobCompression("gzip")
+	BackupJobCompressionZSTD = BackupJobCompression("zstd")
+)
+
+// {
+// "vmid": "101,102",
+// "id": "backup-3ab7be4b-48d4",
+// "schedule": "*/2:00",
+// "mode": "snapshot",
+// "enabled": 1,
+// "notes-template": "{{guestname}}",
+// "compress": "zstd",
+// "mailnotification": "always",
+// "storage": "cephfs",
+// "next-run": 1730732400,
+// }
+type BackupJob struct {
+	Compress         BackupJobCompression `json:"compress"`
+	Mode             BackupJobMode        `json:"mode"`
+	NotesTemplate    string               `json:"notes-template"`
+	Enabled          int                  `json:"enabled"`
+	Schedule         string               `json:"schedule"`
+	Vmid             string               `json:"vmid"`
+	Id               string               `json:"id"`
+	NextRun          int                  `json:"next-run"`
+	Mailnotification string               `json:"mailnotification"`
+	Storage          string               `json:"storage"`
+}
