@@ -1702,18 +1702,6 @@ const (
 	BackupJobCompressionZSTD = BackupJobCompression("zstd")
 )
 
-// {
-// "vmid": "101,102",
-// "id": "backup-3ab7be4b-48d4",
-// "schedule": "*/2:00",
-// "mode": "snapshot",
-// "enabled": 1,
-// "notes-template": "{{guestname}}",
-// "compress": "zstd",
-// "mailnotification": "always",
-// "storage": "cephfs",
-// "next-run": 1730732400,
-// }
 type BackupJob struct {
 	Compress         BackupJobCompression `json:"compress"`
 	Mode             BackupJobMode        `json:"mode"`
