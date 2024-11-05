@@ -13,3 +13,19 @@ func (cl *Cluster) ListBackupJobs(ctx context.Context) ([]BackupJob, error) {
 
 	return backupJobs, nil
 }
+
+func (cl *Cluster) DeleteBackupJob(ctx context.Context, id string) error {
+	if err := cl.client.Delete(ctx, fmt.Sprintf("/cluster/backup/%s", id), nil); err != nil {
+		return fmt.Errorf("delete cluster backup job: %w", err)
+	}
+
+	return nil
+}
+
+func (cl *Cluster) CreateBackupJob(ctx context.Context, job BackupJob) error {
+	if err := cl.client.Post(ctx, "/cluster/backup", &job, nil); err != nil {
+		return fmt.Errorf("create backup job: %w", err)
+	}
+
+	return nil
+}

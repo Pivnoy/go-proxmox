@@ -2,6 +2,7 @@ package proxmox
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -23,7 +24,7 @@ type haGroupConfiguration struct {
 
 func (cl *Cluster) HAGroupCreate(ctx context.Context, groupConfiguration *HAGroupConfiguration) error {
 	if groupConfiguration == nil {
-		return fmt.Errorf("empty ha group configuration")
+		return errors.New("empty ha group configuration")
 	}
 
 	haGroupCfg := haGroupConfiguration{

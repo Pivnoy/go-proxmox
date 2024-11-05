@@ -1674,18 +1674,6 @@ type VirtualMachineDeleteRequest struct {
 	Purge                    *IntOrBool
 }
 
-// "compress": "zstd",
-// "mode": "snapshot",
-// "notes-template": "{{guestname}}",
-// "enabled": 1,
-// "schedule": "*/2:00",
-// "vmid": "101,102",
-// "id": "backup-3ab7be4b-48d4",
-// "type": "vzdump",
-// "next-run": 1730732400,
-// "mailnotification": "always",
-// "storage": "cephfs"
-
 type (
 	BackupJobMode        string
 	BackupJobCompression string
@@ -1713,4 +1701,5 @@ type BackupJob struct {
 	NextRun          int                  `json:"next-run"`
 	Mailnotification string               `json:"mailnotification"`
 	Storage          string               `json:"storage"`
+	Node             string               `json:"node,omitempty"` // use only if backup job set for one node
 }
