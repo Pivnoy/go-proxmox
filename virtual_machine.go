@@ -225,6 +225,56 @@ func makeCloudInitISO(filename, userdata, metadata, vendordata, networkconfig st
 	return
 }
 
+func (v *VirtualMachine) CloudInitOptions(ctx context.Context, device, userdata, metadata, vendordata, networkconfig string) ([]VirtualMachineOption, error) {
+	isoName := fmt.Sprintf(UserDataISOFormat, v.VMID)
+	// create userdata iso file on the local fs
+	iso, err := makeCloudInitISO(isoName, userdata, metadata, vendordata, networkconfig)
+	if err != nil {
+		return nil, err
+	}
+
+	defer func() {
+		// _ = os.Remove(iso.Name())
+	}()
+
+	node, err := v.client.Node(ctx, v.Node)
+	if err != nil {
+		return nil, err
+	}
+
+	storage, err := node.StorageISO(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	task, err := storage.Upload("iso", iso.Name())
+	if err != nil {
+		return nil, err
+	}
+
+	// iso should only be < 5mb so wait for it and then mount it
+	if err := task.WaitFor(ctx, 5); err != nil {
+		return nil, err
+	}
+
+	boot := device
+	if len(strings.TrimSpace(v.VirtualMachineConfig.Boot)) > 0 {
+		boot = fmt.Sprintf("%s;%s", v.VirtualMachineConfig.Boot, device)
+	}
+
+	options := []VirtualMachineOption{
+		{
+			Name:  device,
+			Value: fmt.Sprintf("%s:iso/%s,media=cdrom", storage.Name, isoName),
+		}, {
+			Name:  "boot",
+			Value: boot,
+		},
+	}
+
+	return options, nil
+}
+
 func (v *VirtualMachine) TermWebSocket(term *Term) (chan []byte, chan []byte, chan error, func() error, error) {
 	p := fmt.Sprintf("/nodes/%s/qemu/%d/vncwebsocket?port=%d&vncticket=%s",
 		v.Node, v.VMID, term.Port, url.QueryEscape(term.Ticket))
