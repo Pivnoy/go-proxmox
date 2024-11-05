@@ -1693,13 +1693,13 @@ const (
 type BackupJob struct {
 	Compress         BackupJobCompression `json:"compress"`
 	Mode             BackupJobMode        `json:"mode"`
-	NotesTemplate    string               `json:"notes-template"`
+	NotesTemplate    string               `json:"notes-template,omitempty"`
 	Enabled          int                  `json:"enabled"`
 	Schedule         string               `json:"schedule"`
 	Vmid             string               `json:"vmid"`
 	Id               string               `json:"id"`
-	NextRun          int                  `json:"next-run"`
-	Mailnotification string               `json:"mailnotification"`
+	NextRun          int                  `json:"next-run,omitempty"`
+	Mailnotification string               `json:"mailnotification,omitempty"`
 	Storage          string               `json:"storage"`
 	Node             string               `json:"node,omitempty"` // use only if backup job set for one node
 }
