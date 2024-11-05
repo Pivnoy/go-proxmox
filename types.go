@@ -1432,14 +1432,14 @@ const (
 )
 
 type VirtualMachineBackupOptions struct {
-	Storage          string            `json:"storage"`
-	Vmid             uint              `json:"vmid"`
-	Compress         BackupCompression `json:"compress"`
-	Mode             BackupMode        `json:"mode"`
-	Remove           uint              `json:"remove"`
-	NotificationMode string            `json:"notification-mode"`
-	Protected        *uint             `json:"protected,omitempty"`
-	NotesTemplate    *string           `json:"notes-template,omitempty"`
+	Storage          string                 `json:"storage"`
+	Vmid             uint                   `json:"vmid"`
+	Compress         BackupCompression      `json:"compress"`
+	Mode             BackupMode             `json:"mode"`
+	Remove           uint                   `json:"remove"`
+	NotificationMode BackupNotificationMode `json:"notification-mode"`
+	Protected        *uint                  `json:"protected,omitempty"`
+	NotesTemplate    *string                `json:"notes-template,omitempty"`
 }
 
 type Separator = string
