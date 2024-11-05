@@ -1412,37 +1412,34 @@ const (
 	VirtualMachineBackupNotificationPolicyNever   = VirtualMachineBackupNotificationPolicy("never")
 )
 
+type (
+	BackupMode             string
+	BackupCompression      string
+	BackupNotificationMode string
+)
+
+const (
+	BackupModeSnapshot = BackupMode("snapshot")
+	BackupModeStop     = BackupMode("stop")
+	BackupModeSuspend  = BackupMode("suspend")
+
+	BackupCompressionNone = BackupCompression("0")
+	BackupCompressionLZO  = BackupCompression("lzo")
+	BackupCompressionGZIP = BackupCompression("gzip")
+	BackupCompressionZSTD = BackupCompression("zstd")
+
+	BackupNotificationModeAuto = BackupNotificationMode("auto")
+)
+
 type VirtualMachineBackupOptions struct {
-	All                bool                                   `json:"all,omitempty"`
-	BwLimit            uint                                   `json:"bwlimit,omitempty"`
-	Compress           VirtualMachineBackupCompress           `json:"compress,omitempty"`
-	DumpDir            string                                 `json:"dumpDir,omitempty"`
-	Exclude            string                                 `json:"exclude,omitempty"`
-	ExcludePath        []string                               `json:"exclude-path,omitempty"`
-	IoNice             uint                                   `json:"ionice,omitempty"`
-	LockWait           uint                                   `json:"lockwait,omitempty"`
-	MailTo             string                                 `json:"mailto,omitempty"`
-	Mode               VirtualMachineBackupMode               `json:"mode,omitempty"`
-	Node               string                                 `json:"node,omitempty"`
-	NotesTemplate      string                                 `json:"notes-template,omitempty"`
-	NotificationPolicy VirtualMachineBackupNotificationPolicy `json:"notification-policy,omitempty"`
-	NotificationTarget string                                 `json:"notification-target,omitempty"`
-	Performance        string                                 `json:"performance,omitempty"`
-	Pigz               int                                    `json:"pigz,omitempty"`
-	Pool               string                                 `json:"pool,omitempty"`
-	Protected          string                                 `json:"protected,omitempty"`
-	PruneBackups       string                                 `json:"prune-backups,omitempty"`
-	Quiet              bool                                   `json:"quiet,omitempty"`
-	Remove             bool                                   `json:"remove,omitempty"`
-	Script             string                                 `json:"script,omitempty"`
-	StdExcludes        bool                                   `json:"stdexcludes,omitempty"`
-	StdOut             bool                                   `json:"stdout,omitempty"`
-	Stop               bool                                   `json:"stop,omitempty"`
-	StopWait           uint                                   `json:"stopwait,omitempty"`
-	Storage            string                                 `json:"storage,omitempty"`
-	TmpDir             string                                 `json:"tmpdir,omitempty"`
-	VMID               uint64                                 `json:"vmid,omitempty"`
-	Zstd               uint                                   `json:"zstd,omitempty"`
+	Storage          string            `json:"storage"`
+	Vmid             uint              `json:"vmid"`
+	Compress         BackupCompression `json:"compress"`
+	Mode             BackupMode        `json:"mode"`
+	Remove           uint              `json:"remove"`
+	NotificationMode string            `json:"notification-mode"`
+	Protected        *uint             `json:"protected,omitempty"`
+	NotesTemplate    *string           `json:"notes-template,omitempty"`
 }
 
 type Separator = string
@@ -1674,32 +1671,16 @@ type VirtualMachineDeleteRequest struct {
 	Purge                    *IntOrBool
 }
 
-type (
-	BackupJobMode        string
-	BackupJobCompression string
-)
-
-const (
-	BackupJobModeSnapshot = BackupJobMode("snapshot")
-	BackupJobModeStop     = BackupJobMode("stop")
-	BackupJobModeSuspend  = BackupJobMode("suspend")
-
-	BackupJobCompressionNone = BackupJobCompression("none")
-	BackupJobCompressionLZO  = BackupJobCompression("lzo")
-	BackupJobCompressionGZIP = BackupJobCompression("gzip")
-	BackupJobCompressionZSTD = BackupJobCompression("zstd")
-)
-
 type BackupJob struct {
-	Compress         BackupJobCompression `json:"compress"`
-	Mode             BackupJobMode        `json:"mode"`
-	NotesTemplate    string               `json:"notes-template,omitempty"`
-	Enabled          int                  `json:"enabled"`
-	Schedule         string               `json:"schedule"`
-	Vmid             string               `json:"vmid"`
-	Id               string               `json:"id"`
-	NextRun          int                  `json:"next-run,omitempty"`
-	Mailnotification string               `json:"mailnotification,omitempty"`
-	Storage          string               `json:"storage"`
-	Node             string               `json:"node,omitempty"` // use only if backup job set for one node
+	Compress         BackupCompression `json:"compress"`
+	Mode             BackupMode        `json:"mode"`
+	NotesTemplate    string            `json:"notes-template,omitempty"`
+	Enabled          int               `json:"enabled"`
+	Schedule         string            `json:"schedule"`
+	Vmid             string            `json:"vmid"`
+	Id               string            `json:"id"`
+	NextRun          int               `json:"next-run,omitempty"`
+	Mailnotification string            `json:"mailnotification,omitempty"`
+	Storage          string            `json:"storage"`
+	Node             string            `json:"node,omitempty"` // use only if backup job set for one node
 }
