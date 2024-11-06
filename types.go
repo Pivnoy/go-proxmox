@@ -1436,9 +1436,9 @@ type VirtualMachineBackupOptions struct {
 	Vmid             uint                   `json:"vmid"`
 	Compress         BackupCompression      `json:"compress"`
 	Mode             BackupMode             `json:"mode"`
-	Remove           uint                   `json:"remove"`
+	Remove           IntOrBool              `json:"remove"`
 	NotificationMode BackupNotificationMode `json:"notification-mode"`
-	Protected        *uint                  `json:"protected,omitempty"`
+	Protected        *IntOrBool             `json:"protected,omitempty"`
 	NotesTemplate    *string                `json:"notes-template,omitempty"`
 }
 
@@ -1675,7 +1675,7 @@ type BackupJob struct {
 	Compress         BackupCompression `json:"compress"`
 	Mode             BackupMode        `json:"mode"`
 	NotesTemplate    string            `json:"notes-template,omitempty"`
-	Enabled          int               `json:"enabled"`
+	Enabled          IntOrBool         `json:"enabled"`
 	Schedule         string            `json:"schedule"`
 	Vmid             string            `json:"vmid"`
 	Id               string            `json:"id"`
