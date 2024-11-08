@@ -1679,8 +1679,8 @@ type BackupJob struct {
 	Schedule         string            `json:"schedule"`
 	Vmid             string            `json:"vmid"`
 	Id               string            `json:"id"`
-	NextRun          int               `json:"next-run,omitempty"`
-	Mailnotification string            `json:"mailnotification,omitempty"`
+	NextRun          *int              `json:"next-run,omitempty"`
+	Mailnotification *string           `json:"mailnotification,omitempty"`
 	Storage          string            `json:"storage"`
 	Node             *string           `json:"node,omitempty"` // use only if backup job set for one node
 }
