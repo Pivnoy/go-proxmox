@@ -1674,7 +1674,7 @@ type VirtualMachineDeleteRequest struct {
 type BackupJob struct {
 	Compress         BackupCompression `json:"compress"`
 	Mode             BackupMode        `json:"mode"`
-	NotesTemplate    string            `json:"notes-template,omitempty"`
+	NotesTemplate    *string           `json:"notes-template,omitempty"`
 	Enabled          IntOrBool         `json:"enabled"`
 	Schedule         string            `json:"schedule"`
 	Vmid             string            `json:"vmid"`
@@ -1682,5 +1682,5 @@ type BackupJob struct {
 	NextRun          int               `json:"next-run,omitempty"`
 	Mailnotification string            `json:"mailnotification,omitempty"`
 	Storage          string            `json:"storage"`
-	Node             string            `json:"node,omitempty"` // use only if backup job set for one node
+	Node             *string           `json:"node,omitempty"` // use only if backup job set for one node
 }
