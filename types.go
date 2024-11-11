@@ -163,7 +163,7 @@ type ClusterResource struct {
 	Node       string    `json:",omitempty"`
 	PluginType string    `json:",omitempty"`
 	Pool       string    `json:",omitempty"`
-	Shared     IntOrBool `json:"shared,omitempty"`
+	Shared     IntOrBool `json:",omitempty"`
 	Status     string    `json:",omitempty"`
 	Storage    string    `json:",omitempty"`
 	Tags       string    `json:",omitempty"`
