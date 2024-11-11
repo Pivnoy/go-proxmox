@@ -143,33 +143,33 @@ func (cl *Cluster) UnmarshalJSON(b []byte) error {
 type ClusterResources []*ClusterResource
 
 type ClusterResource struct {
-	ID         string  `jsont:"id"`
-	Type       string  `json:"type"`
-	CGroupMode uint64  `json:"cgroup-mode,omitempty"`
-	Content    string  `json:",omitempty"`
-	CPU        float64 `json:",omitempty"`
-	Disk       uint64  `json:",omitempty"` // documented as string but this is an int
-	DiskRead   uint64  `json:",omitempty"`
-	DiskWrite  uint64  `json:",omitempty"`
-	HAstate    string  `json:",omitempty"`
-	Level      string  `json:",omitempty"`
-	MaxCPU     uint64  `json:",omitempty"`
-	MaxDisk    uint64  `json:",omitempty"`
-	MaxMem     uint64  `json:",omitempty"`
-	Mem        uint64  `json:",omitempty"` // documented as string but this is an int
-	Name       string  `json:",omitempty"`
-	NetIn      uint64  `json:",omitempty"`
-	NetOut     uint64  `json:",omitempty"`
-	Node       string  `json:",omitempty"`
-	PluginType string  `json:",omitempty"`
-	Pool       string  `json:",omitempty"`
-	Shared     uint64  `json:",omitempty"`
-	Status     string  `json:",omitempty"`
-	Storage    string  `json:",omitempty"`
-	Tags       string  `json:",omitempty"`
-	Template   uint64  `json:",omitempty"`
-	Uptime     uint64  `json:",omitempty"`
-	VMID       uint64  `json:",omitempty"`
+	ID         string    `jsont:"id"`
+	Type       string    `json:"type"`
+	CGroupMode uint64    `json:"cgroup-mode,omitempty"`
+	Content    string    `json:",omitempty"`
+	CPU        float64   `json:",omitempty"`
+	Disk       uint64    `json:",omitempty"` // documented as string but this is an int
+	DiskRead   uint64    `json:",omitempty"`
+	DiskWrite  uint64    `json:",omitempty"`
+	HAstate    string    `json:",omitempty"`
+	Level      string    `json:",omitempty"`
+	MaxCPU     uint64    `json:",omitempty"`
+	MaxDisk    uint64    `json:",omitempty"`
+	MaxMem     uint64    `json:",omitempty"`
+	Mem        uint64    `json:",omitempty"` // documented as string but this is an int
+	Name       string    `json:",omitempty"`
+	NetIn      uint64    `json:",omitempty"`
+	NetOut     uint64    `json:",omitempty"`
+	Node       string    `json:",omitempty"`
+	PluginType string    `json:",omitempty"`
+	Pool       string    `json:",omitempty"`
+	Shared     IntOrBool `json:",omitempty"`
+	Status     string    `json:",omitempty"`
+	Storage    string    `json:",omitempty"`
+	Tags       string    `json:",omitempty"`
+	Template   uint64    `json:",omitempty"`
+	Uptime     uint64    `json:",omitempty"`
+	VMID       uint64    `json:",omitempty"`
 }
 
 type NodeStatuses []*NodeStatus
