@@ -1684,3 +1684,7 @@ type BackupJob struct {
 	Storage          string            `json:"storage"`
 	Node             *string           `json:"node,omitempty"` // use only if backup job set for one node
 }
+
+type UpdateBackupJobRequest struct {
+	Vmid *string `json:"vmid,omitempty"`
+}

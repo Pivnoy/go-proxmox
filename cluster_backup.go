@@ -29,3 +29,11 @@ func (cl *Cluster) CreateBackupJob(ctx context.Context, job BackupJob) error {
 
 	return nil
 }
+
+func (cl *Cluster) UpdateBackupJob(ctx context.Context, req UpdateBackupJobRequest) error {
+	if err := cl.client.Put(ctx, "/cluster/backup", &req, nil); err != nil {
+		return fmt.Errorf("update cluster backup job: %w", err)
+	}
+
+	return nil
+}
