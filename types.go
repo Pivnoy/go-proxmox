@@ -1686,5 +1686,6 @@ type BackupJob struct {
 }
 
 type UpdateBackupJobRequest struct {
+	Id   string  `json:"id"`
 	Vmid *string `json:"vmid,omitempty"`
 }
